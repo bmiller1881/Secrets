@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
 
 // Deployment Environment
 const localDeploymentEnv = "http://localhost:3000";
-const herokuDeploymentEnv = "https://secrets-project-bmiller.herokuapp.com/";
+const herokuDeploymentEnv = "https://secrets-project-bmiller.herokuapp.com";
 const setDeploymentEnv = herokuDeploymentEnv;
 
 userSchema.plugin(passportLocalMongoose);
