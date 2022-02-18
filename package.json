@@ -1,6 +1,9 @@
 {
   "name": "secrets---starting-code",
   "version": "1.0.0",
+  "engines": {
+    "node": "16.14.0"
+  },
   "description": "",
   "main": "app.js",
   "scripts": {

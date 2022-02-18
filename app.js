@@ -32,7 +32,9 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect("mongodb://localhost:27017/userDB");
+mongoose.connect(
+  "mongodb+srv://bmiller1881:secrets_dozier@cluster0.clksm.mongodb.net/userDB?retryWrites=true&w=majority"
+);
 
 const userSchema = new mongoose.Schema({
   email: String,
@@ -41,6 +43,11 @@ const userSchema = new mongoose.Schema({
   facebookId: String,
   secret: [String],
 });
+
+// Deployment Environment
+const localDeploymentEnv = "http://localhost:3000";
+const herokuDeploymentEnv = "https://secrets-project-bmiller.herokuapp.com/";
+const setDeploymentEnv = herokuDeploymentEnv;
 
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
@@ -64,7 +71,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "http://localhost:3000/auth/google/secrets",
+      callbackURL: setDeploymentEnv + "/auth/google/secrets",
       // userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
     },
     function (accessToken, refreshToken, profile, cb) {
@@ -80,7 +87,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID_FB,
       clientSecret: process.env.CLIENT_SECRET_FB,
-      callbackURL: "http://localhost:3000/auth/facebook/secrets",
+      callbackURL: setDeploymentEnv + "/auth/facebook/secrets",
     },
     function (accessToken, refreshToken, profile, cb) {
       console.log(profile);
@@ -208,6 +215,6 @@ app.route("/logout").get(function (req, res) {
   res.redirect("/");
 });
 
-app.listen(3000, function () {
+app.listen(process.env.PORT || 3000, function () {
   console.log("Server started on port 3000.");
 });
