@@ -33,7 +33,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 mongoose.connect(
-  "mongodb+srv://bmiller1881:secrets_dozier@cluster0.clksm.mongodb.net/userDB?retryWrites=true&w=majority"
+  "mongodb+srv://bmiller1881:" +
+    process.env.CLIENT_SECRET_MONGODB +
+    "@cluster0.clksm.mongodb.net/userDB?retryWrites=true&w=majority"
 );
 
 const userSchema = new mongoose.Schema({
