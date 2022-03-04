@@ -143,7 +143,7 @@ app
     }
   );
 
-//authenticate using local Passport strategy
+//login route handles user authentication for accounts already created
 app
   .route("/login")
   .get(function (req, res) {
@@ -173,23 +173,30 @@ app.route("/secrets").get(function (req, res) {
       console.log(err);
     } else {
       if (foundUsers) {
-        res.render("secrets", { usersWithSecrets: foundUsers });
+        if (req.isAuthenticated()) {
+          res.render("secrets", { usersWithSecrets: foundUsers });
+          //ture => allows access to secrets page if user is authenticated
+        } else {
+          res.redirect("/login");
+        }
       }
     }
   });
 });
 
+//submit route handles user secret submissions
 app
   .route("/submit")
   .get(function (req, res) {
     if (req.isAuthenticated()) {
       res.render("submit");
+      //true => allows access to submit page if user is authenticated
     } else {
       res.redirect("/login");
     }
   })
   .post(function (req, res) {
-    // const submittedSecret = submittedSecret.push(req.body.secret);
+    //const submittedSecret = submittedSecret.push(req.body.secret)
     console.log(req.user.id);
     User.findById(req.user.id, function (err, foundUser) {
       if (err) {
@@ -205,6 +212,7 @@ app
     });
   });
 
+//register route handles new users
 app
   .route("/register")
   .get(function (req, res) {
