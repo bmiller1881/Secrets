@@ -35,7 +35,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //set variable to URL of environment path
-const setDeploymentEnv = "https://secrets-project-bmiller-test.herokuapp.com";
+const setDeploymentEnv = "https://secrets-project-bmiller.herokuapp.com";
 
 //connect to MongoDB
 mongoose.connect(
