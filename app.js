@@ -57,7 +57,7 @@ userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
 
 //create collection
-const User = new mongoose.model("User_test", userSchema);
+const User = new mongoose.model("User", userSchema);
 
 //setup passport.js to use userDB
 passport.use(User.createStrategy());
@@ -104,9 +104,12 @@ passport.use(
     //API: "https://developers.facebook.com/apps/"
     function (accessToken, refreshToken, profile, cb) {
       console.log(profile);
-      User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-        return cb(err, user);
-      });
+      User.findOrCreate(
+        { username: profile.name, facebookId: profile.id },
+        function (err, user) {
+          return cb(err, user);
+        }
+      );
     }
   )
 );
@@ -118,7 +121,7 @@ app.route("/").get(function (req, res) {
 //authenticate using google account
 app
   .route("/auth/google")
-  .get(passport.authenticate("google", { scope: ["email", "profile"] }));
+  .get(passport.authenticate("google", { scope: ["profile"] }));
 
 app
   .route("/auth/google/secrets")
