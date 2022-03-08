@@ -104,12 +104,9 @@ passport.use(
     //API: "https://developers.facebook.com/apps/"
     function (accessToken, refreshToken, profile, cb) {
       console.log(profile);
-      User.findOrCreate(
-        { username: profile.name, facebookId: profile.id },
-        function (err, user) {
-          return cb(err, user);
-        }
-      );
+      User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+        return cb(err, user);
+      });
     }
   )
 );
